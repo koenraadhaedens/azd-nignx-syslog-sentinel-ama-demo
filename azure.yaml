@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+name: tdd-azd-nignx-syslog-sentinel-ama-demo
+metadata:
+  template: ttdd-azd-nignx-syslog-sentinel-ama-demo@0.0.1-beta
+infra:
+   provider: "bicep"
