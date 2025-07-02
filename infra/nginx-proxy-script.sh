@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# Set your syslog server private IP
+SYSLOG_IP="${SYSLOG_IP:-10.0.0.5}"  # Fallback IP; ideally injected from outside
+
+# Validate it's not a placeholder
+if [[ "$SYSLOG_IP" == "10.0.0.5" ]]; then
+  echo "WARNING: Using placeholder SYSLOG_IP. Set a real IP before deployment."
+fi
+
 # Install NGINX
 sudo apt update
 sudo apt install -y nginx
@@ -19,12 +27,8 @@ server {
 }
 EOF
 
-# Set up access log to remote syslog server (replace placeholder IP)
-SYSLOG_IP="10.0.0.5" # You should replace this with the actual private IP of the syslog server
-
-sudo tee /etc/nginx/conf.d/syslog-logging.conf > /dev/null <<EOF
-access_log syslog:server=\${SYSLOG_IP}:514,tag=nginx_access;
-EOF
+# Configure syslog logging (corrected for variable expansion)
+echo "access_log syslog:server=${SYSLOG_IP}:514,tag=nginx_access;" | sudo tee /etc/nginx/conf.d/syslog-logging.conf
 
 # Reload NGINX
 sudo nginx -t && sudo systemctl restart nginx
