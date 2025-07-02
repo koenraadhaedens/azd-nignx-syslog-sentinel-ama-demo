@@ -1,0 +1,1 @@
+# azd-nignx-syslog-sentinel-ama-demo
