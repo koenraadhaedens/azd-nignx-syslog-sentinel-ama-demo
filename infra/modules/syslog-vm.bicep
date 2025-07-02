@@ -121,3 +121,21 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
   }
 }
+
+resource vmExt 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
+  parent: vm
+  name: 'nginxInstallScript'
+  location: location
+  properties: {
+    publisher: 'Microsoft.Azure.Extensions'
+    type: 'CustomScript'
+    typeHandlerVersion: '2.1'
+    autoUpgradeMinorVersion: true
+    settings: {
+      fileUris: [
+        'https://raw.githubusercontent.com/koenraadhaedens/azd-nignx-syslog-sentinel-ama-demo/main/infra/syslog-server-script.sh'
+      ]
+      commandToExecute: 'bash nginx-proxy-script.sh'
+    }
+  }
+}
