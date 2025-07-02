@@ -1,4 +1,3 @@
-
 @description('Environment name for naming resources')
 param environmentName string
 
@@ -99,7 +98,6 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       linuxConfiguration: {
         disablePasswordAuthentication: false
       }
-      customData: base64('curl -s https://raw.githubusercontent.com/koenraadhaedens/azd-nignx-syslog-sentinel-ama-demo/main/infra/syslog-server-script.sh | bash')
     }
     storageProfile: {
       imageReference: {
@@ -124,7 +122,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
 
 resource vmExt 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
   parent: vm
-  name: 'nginxInstallScript'
+  name: 'syslogInstallScript'
   location: location
   properties: {
     publisher: 'Microsoft.Azure.Extensions'
@@ -135,7 +133,7 @@ resource vmExt 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
       fileUris: [
         'https://raw.githubusercontent.com/koenraadhaedens/azd-nignx-syslog-sentinel-ama-demo/main/infra/syslog-server-script.sh'
       ]
-      commandToExecute: 'bash nginx-proxy-script.sh'
+      commandToExecute: 'bash syslog-server-script.sh'
     }
   }
 }

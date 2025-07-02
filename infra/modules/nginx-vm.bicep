@@ -1,4 +1,3 @@
-
 @description('Environment name for naming resources')
 param environmentName string
 
@@ -99,7 +98,6 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       linuxConfiguration: {
         disablePasswordAuthentication: false
       }
-      customData: base64('curl -s https://raw.githubusercontent.com/koenraadhaedens/azd-nignx-syslog-sentinel-ama-demo/main/infra/nginx-proxy-script.sh | bash')
     }
     storageProfile: {
       imageReference: {

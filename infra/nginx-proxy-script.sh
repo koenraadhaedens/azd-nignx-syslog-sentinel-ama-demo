@@ -1,11 +1,12 @@
 #!/bin/bash
+set -e
 
 # Install NGINX
 sudo apt update
 sudo apt install -y nginx
 
-# Configure NGINX as a basic forward proxy
-cat <<EOF | sudo tee /etc/nginx/conf.d/forward-proxy.conf
+# Configure NGINX as a forward proxy
+sudo tee /etc/nginx/conf.d/forward-proxy.conf > /dev/null <<EOF
 server {
     listen 8888;
 
@@ -18,8 +19,12 @@ server {
 }
 EOF
 
-sudo nginx -s reload
+# Set up access log to remote syslog server (replace placeholder IP)
+SYSLOG_IP="10.0.0.5" # You should replace this with the actual private IP of the syslog server
 
-# Enable syslog logging
-echo 'access_log syslog:server=SYSLOG_SERVER_IP:514,tag=nginx_access;' | sudo tee -a /etc/nginx/nginx.conf
-sudo nginx -s reload
+sudo tee /etc/nginx/conf.d/syslog-logging.conf > /dev/null <<EOF
+access_log syslog:server=\${SYSLOG_IP}:514,tag=nginx_access;
+EOF
+
+# Reload NGINX
+sudo nginx -t && sudo systemctl restart nginx
