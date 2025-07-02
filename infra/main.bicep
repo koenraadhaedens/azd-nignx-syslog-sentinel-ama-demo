@@ -21,6 +21,15 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module vnet 'modules/vnet.bicep' = {
+  name: 'vnetDeployment'
+  scope: resourceGroup(rg.name)
+  params: {
+    environmentName: environmentName
+    location: location
+  }
+}
+
 module nginxVM 'modules/nginx-vm.bicep' = {
   name: 'nginxVMDeployment'
   scope: resourceGroup(rg.name)
@@ -29,6 +38,7 @@ module nginxVM 'modules/nginx-vm.bicep' = {
     location: location
     adminPassword: winVMPassword
     adminUsername: 'adminuser'
+    subnetId: vnet.outputs.subnetId
   }
 }
 
@@ -40,5 +50,6 @@ module syslogVM 'modules/syslog-vm.bicep' = {
     location: location
     adminPassword: winVMPassword
     adminUsername: 'adminuser'
+    subnetId: vnet.outputs.subnetId
   }
 }

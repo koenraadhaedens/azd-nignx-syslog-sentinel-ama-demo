@@ -9,13 +9,11 @@ param location string
 @description('Admin password for the VM')
 param adminPassword string
 
+@description('ID of the subnet to attach the VM to')
+param subnetId string
+
 @description('Admin username for the VM')
 param adminUsername string
-
-var vnetName = 'demo-${environmentName}-vnet'
-resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
-  name: vnetName
-}
 
 resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
   name: 'nsg-${environmentName}'
@@ -72,7 +70,7 @@ resource nic 'Microsoft.Network/networkInterfaces@2021-05-01' = {
         name: 'ipconfig1'
         properties: {
           subnet: {
-            id: vnet.properties.subnets[0].id
+            id: subnetId
           }
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
