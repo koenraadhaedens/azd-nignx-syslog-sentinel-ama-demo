@@ -1,44 +1,56 @@
+Under Construction. All help is welcome. Just fork, make changes and do a pull request
+
+
 # Azure Sentinel Syslog Demo with NGINX and AMA
 
-This guide walks through setting up a demo environment to send NGINX logs from a Linux VM to Microsoft Sentinel using the AMA (Azure Monitor Agent), then parsing and alerting on those logs with KQL and Copilot.
+This guide walks through setting up a demo environment to send NGINX logs from a Linux VM to Microsoft Sentinel using the AMA (Azure Monitor Agent), then parsing and alerting with Sentinel Analytics Rule.
 
 ---
 
 ## 🧩 Prerequisites
 
 - Azure subscription with owner/contributor permissions
-- Azure Developer CLI installed and configured
-- Access to the `mtt-deploy` repo or instructions to deploy Sentinel environment
-- Access to the `demo-deploy` repo/project for provisioning NGINX and syslog VMs
-- SSH client
-- Public IP of your client machine (used later in an alert rule)
+
 
 ---
 
 ## ✅ Step 1 – Deploy Microsoft Sentinel Environment
 
-Use the provided MTT procedure to deploy the full Sentinel lab environment.
+(you can also do the demo without Sentinel just using log analytics)
+
+Go to Azure Cloud Shell (click the CloudShell icon on the top right in azure, you can use both Bash or PowerShell)
+
+go to https://microsoftlearning.github.io/trainer-demo-deploy/ and find Azure Sentinel with Data Connectors
+
 
 ```bash
 # Example command (adjust to your lab tooling)
-azd up --template mtt-deploy
+azd init -t petender/azd-sentinel
+azd up
 ```
 
-Verify that:
-- Sentinel is enabled on the Log Analytics workspace
-- A workspace is provisioned and connected
+
 
 ---
 
 ## ✅ Step 2 – Deploy Demo Environment (NGINX + Syslog VMs)
 
 Deploy the NGINX web proxy and syslog VM using the demo template.
+You do nat have to wait for the sentinel demo to finish, you can open a second tab and go to https://shell.azure.com.
+
+Type Commands below and follow prompts. Use same region as choosen for Sentinel
 
 ```bash
-azd up --template demo-deploy
+mkdir 2
+cd 2
+azd init -t koenraadhaedens/azd-nignx-syslog-sentinel-ama-demo
+azd up
 ```
 
-Confirm:
+
+Verify that:
+- Sentinel is enabled on the Log Analytics workspace
+- A workspace is provisioned and connected
 - VM `nginx-vm-<deploymentname>` is created with a demo site and open port 443
 - VM `syslog-vm-<deploymentname>` is created and ready to receive syslog
 - `nginx-vm` is configured to forward syslog messages to `syslog-vm` over UDP/514
@@ -48,21 +60,9 @@ Confirm:
 ## ✅ Step 3 – Validate Syslog Flow
 
 1. **Temporarily open port 22** on the `syslog-vm-xxx` from your IP:
-   - Use Azure Portal or CLI:
+   - Use Azure Portal :
+   Find Syslog Virtual machine, got to the Network setting and add ncoming Rule to open SSH only from your public ip, I recomend using JIT from server protection workload in Defender for Cloud.
 
-   ```bash
-   az network nsg rule create \
-     --resource-group <rg-name> \
-     --nsg-name <nsg-name> \
-     --name AllowSSH \
-     --priority 100 \
-     --direction Inbound \
-     --access Allow \
-     --protocol Tcp \
-     --source-address-prefixes <your-public-ip> \
-     --source-port-ranges '*' \
-     --destination-port-ranges 22
-   ```
 
 2. **SSH into the syslog VM**:
 
