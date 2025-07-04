@@ -21,7 +21,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
   tags: {
   SecurityControl: 'Ignore'
-  CostControl: 'Ignore'
+  CostControl: 'Ignore'}
 }
 
 module vnet 'modules/vnet.bicep' = {
