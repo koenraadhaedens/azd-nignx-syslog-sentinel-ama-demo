@@ -15,7 +15,7 @@ param subnetId string
 param adminUsername string
 
 resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
-  name: 'nsg-${environmentName}'
+  name: 'nsgngixvm-${environmentName}'
   location: location
   properties: {
     securityRules: [
