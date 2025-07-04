@@ -19,6 +19,9 @@ var resourceGroupName = 'rg-${environmentName}'
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
+  tags: {
+  SecurityControl: 'Ignore'
+  CostControl: 'Ignore'
 }
 
 module vnet 'modules/vnet.bicep' = {

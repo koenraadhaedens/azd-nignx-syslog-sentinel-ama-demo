@@ -24,7 +24,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
         properties: {
           priority: 1000
           direction: 'Inbound'
-          access: 'Allow'
+          access: 'Deny'
           protocol: 'Tcp'
           sourcePortRange: '*'
           destinationPortRange: '22'

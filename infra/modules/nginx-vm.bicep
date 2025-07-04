@@ -24,7 +24,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
         properties: {
           priority: 1000
           direction: 'Inbound'
-          access: 'Allow'
+          access: 'Deny'
           protocol: 'Tcp'
           sourcePortRange: '*'
           destinationPortRange: '22'
@@ -33,14 +33,14 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
         }
       }
       {
-        name: 'ProxyPort'
+        name: 'HttpsPort'
         properties: {
           priority: 1010
           direction: 'Inbound'
           access: 'Allow'
           protocol: 'Tcp'
           sourcePortRange: '*'
-          destinationPortRange: '8888'
+          destinationPortRange: '443'
           sourceAddressPrefix: '*'
           destinationAddressPrefix: '*'
         }
