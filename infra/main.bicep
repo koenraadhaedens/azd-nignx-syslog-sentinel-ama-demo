@@ -12,7 +12,7 @@ param location string
 
 @secure()
 @description('Password for the Linux VMs')
-param winVMPassword string
+param VMPassword string
 
 var resourceGroupName = 'rg-${environmentName}'
 
@@ -39,7 +39,7 @@ module nginxVM 'modules/nginx-vm.bicep' = {
   params: {
     environmentName: environmentName
     location: location
-    adminPassword: winVMPassword
+    adminPassword: VMPassword
     adminUsername: 'adminuser'
     subnetId: vnet.outputs.subnetId
   }
@@ -51,7 +51,7 @@ module syslogVM 'modules/syslog-vm.bicep' = {
   params: {
     environmentName: environmentName
     location: location
-    adminPassword: winVMPassword
+    adminPassword: VMPassword
     adminUsername: 'adminuser'
     subnetId: vnet.outputs.subnetId
   }
