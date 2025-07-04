@@ -36,7 +36,7 @@ azd up
 ## ✅ Step 2 – Deploy Demo Environment (NGINX + Syslog VMs)
 
 Deploy the NGINX web proxy and syslog VM using the demo template.
-You do nat have to wait for the sentinel demo to finish, you can open a second tab and go to https://shell.azure.com.
+You don't have to wait for the Sentinel deployment to complete — you can open a new browser tab and go to https://shell.azure.com to continue working.
 
 Type Commands below and follow prompts. Use same region as choosen for Sentinel
 
