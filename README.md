@@ -17,10 +17,11 @@ This guide walks through setting up a demo environment to send NGINX logs from a
 ## ✅ Step 1 – Deploy Microsoft Sentinel Environment
 
 (you can also do the demo without Sentinel just using log analytics)
+go to https://microsoftlearning.github.io/trainer-demo-deploy/ and find Azure Sentinel with Data Connectors
+
 
 Go to Azure Cloud Shell (click the CloudShell icon on the top right in azure, you can use both Bash or PowerShell)
 
-go to https://microsoftlearning.github.io/trainer-demo-deploy/ and find Azure Sentinel with Data Connectors
 
 
 ```bash
